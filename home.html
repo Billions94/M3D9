@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <style>
+      body {
+        margin: 0;
+        color: black;
+        background: rgb(2,0,36);
+        background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%);
+      }
+      .cool {
+            background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%);
+        }
+        #cart {
+            overflow-y: scroll;
+            max-height: 230px;
+            /* display: -webkit-box; */
+            /* -webkit-line-clamp: 1; */
+            /* -webkit-box-orient: vertical; */
+        }
+
+        .cart-btn {
+            width: 4.3rem;
+            height: 2.15rem;
+            margin-top: 2px;
+            padding: 3px;
+        }
+
+        .card {
+          border-radius: 0;
+        }
+
+        .card-img-top {
+          object-fit: cover !important;
+        }
+        .container {
+          position: relative;
+          width: 50%;
+        }
+
+        .image {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+
+        .overlay {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 100%;
+          width: 100%;
+          opacity: 0;
+          transition: .5s ease;
+          background-color: #008CBA;
+        }
+
+        .container:hover .overlay {
+          opacity: 1;
+        }
+
+        .text {
+          color: white;
+          font-size: 20px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+        }
+    </style>
+
+    <title>Home</title>
+  </head>
+  <body>
+        <nav class="navbar navbar-expand-lg navbar-dark cool sticky-top">
+          <a class="navbar-brand" href="#">Strivazon <img src="./images/navicon.png" style="width:15px" alt=""> </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="backoffice.html">Back Office</a>
+              </li>
+            </ul>
+            <div class="dropleft btn-group">
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="./images/icon.png" style="width:20px">
+              </button>
+              <div id="cart" class="dropdown-menu">
+                 <!---                 ADD TO PRODUCTS TO CART                    ----->    
+                <a  id="count" class="dropdown-item" href="#">Current items in cart (0)</a>
+                <div class="dropdown-divider"></div>
+      <!---                  SEPERATED LINK FOR ACTUAL PRODUCT                     ----->          
+              </div>
+            </div>
+          </div>
+        </nav>
+
+    <h1 class="text-light text-center mb-4"> <img src="./images/gadicon.png"  width="40px" alt=""> Products</h1>
+    
+    <div class="conta">
+        <div class="row justify-content- center ml-2 mr-2 mb-2">
+
+          </div>
+
+        </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+<script>
+
+      
+
+
+  const getProduct = (product) => {
+
+        const container = document.querySelector('.row')
+        const containerNode = document.createElement('div')
+          containerNode.className = 'col-3'
+          containerNode.innerHTML = `
+            <div class="card">
+            <img src=${product.imageUrl}class="card-img-top img-fluid" alt="..." style="height:250px">
+            <div class="card-body">
+              <h5 class="card-title">${product.name}</h5>
+              <p class="card-text">Product brand: ${product.brand}</p>
+              <p class="card-text">Product info: ${product.description}</p>
+              <p class="card-text">Price: €${product.price} </p>
+              <button type="button" class="btn btn-warning" onclick="addToCart(event,'${product.imageUrl}', '${product.brand}' ,'${product.name}', '€${product.price}')">Buy</button>
+
+              
+            </div>`
+
+            container.appendChild(containerNode)
+  }
+  
+  const cartArray = [] 
+
+    const addToCart = (event, imageUrl, brand, name, price) => {
+    // console.log(event.target)
+    let productEvent = event.target.closest('.col-3')
+    // console.log(productEvent)
+    // bookEvent.remove()
+    cartArray.push(productEvent)
+// We are pushing our products into the cartArrays[]    
+    let cart = document.getElementById('cart')
+
+    let product = document.createElement('div')
+        product.className = 'dropdown-item'
+        product.innerHTML = ` <div class="d-flex">
+        <div>
+        <a href="#" id="remove" class="dropdown-item"><span><img src="${imageUrl}" alt="" width="25"></span>
+        <span>${brand}</span> <span>${name}</span><span class="ml-2" >${price}</span></a>
+        </div>
+        <div>
+        <a href="#" class="btn btn-danger mt-1 cart-btn" onclick="removeFromCart(event)">Remove</a></span></a>
+        </div>
+        </div>
+        `
+        cart.appendChild(product)
+        console.log(cart)
+        console.log(cartArray)
+ // We are filling and appending the products to our cartArrays
+        productCount() // Calls the productCount function
+       
+  }
+
+  const removeFromCart = (event) => {
+    
+     let removeFromCart = event.target.closest('.dropdown-item')
+        removeFromCart.remove()
+ 
+        productCount()
+
+  }
+
+  const productCount = () => {
+
+    if(cartArray.length > 0) {
+        let count = document.getElementById('count')
+        count.innerHTML = `Current items in your cart  (${cartArray.length})`
+    } else if (cartArray.length < 1){
+        count.innerHTML = `Current items in your cart  (0)`
+    }
+}
+
+  
+
+  const fetchData = () => {
+    fetch("https://striveschool-api.herokuapp.com/api/product/", {
+      headers: {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI"
+      }
+      })
+      .then(response => response.json())
+      .then(data => {
+
+        console.log(data)
+        data.forEach(product => {
+        
+          getProduct(product)
+          
+        })
+
+      })
+
+
+
+
+  }
+
+
+
+window.onload = () => {
+          fetchData()
+
+
+}
+</script>
+
+  </body>
+</html>
