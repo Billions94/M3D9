@@ -112,15 +112,10 @@
             
             <div class="container">
                 <h1 class="text-dark">Edit Product</h1>
-                <div class="row justify-content-center">
+                <div  class="row justify-content-center">
                     <div class="col-8">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">name</li>
-                            <li class="list-group-item">brand</li>
-                            <li class="list-group-item">description</li>
-                            <li class="list-group-item">imageUrl</li>
-                            <li class="list-group-item">createdAt</li>
-                            <li class="list-group-item">updateAt</li>
+                        <ul id="ul" class="list-group list-group-flush">
+
                         </ul>
                     </div>
                 </div>
@@ -133,8 +128,113 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script>
 
-        const url = "https://striveschool-api.herokuapp.com/api/product/"
-        const productId = new URLSearchParams(location.search).get('productId')
+
+        const getProduct = (product) => {
+
+                const container = document.querySelector('.row')
+                const containerNode = document.createElement('div')
+                containerNode.className = 'col-3'
+                containerNode.innerHTML = `          
+                             <li class="list-group-item">${name}</li>
+                            <li class="list-group-item">${description}</li>
+                            <li class="list-group-item">${brand}</li>
+                            <li class="list-group-item">${imgUrl}</li>
+                            <li class="list-group-item">${price}</li>
+                        `
+
+                    container.appendChild(containerNode)
+        }
+
+        const fetchData = () => {
+            const productId = new URLSearchParams(location.search).get('productId')
+            const url = productId ? "https://striveschool-api.herokuapp.com/api/product/" + productId : "https://striveschool-api.herokuapp.com/api/product/"
+  
+            const {name, description, brand, imgUrl, price} = data
+            console.log(data)
+
+                    // document.getElementById('name').value = name
+                    // document.getElementById('description').value = description
+                    // document.getElementById('brand').value =  brand
+                    // document.getElementById('Img-Url').value = imgUrl
+                    // document.getElementById('price').value = price 
+
+
+                fetch((url), {
+                // method: 'GET',
+                // body: JSON.stringify(myObject), 
+                headers: {
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI"
+                }
+                })
+                .then(response => response.json())
+                .then(data => {
+
+                console.log(data)
+                data.forEach(product => {
+                
+                getProduct(product)
+                console.log(product)
+                
+                })
+
+            })
+
+            }
+        
+        window.onload = () => {
+            fetchData()
+        }
+        // window.onload = async (event) => {
+            
+
+        //     const {name, description, brand, imgUrl, price} = data
+        //     console.log(data)
+
+        //             document.getElementById('name').value = name
+        //             document.getElementById('description').value = description
+        //             document.getElementById('brand').value =  brand
+        //             document.getElementById('Img-Url').value = imgUrl
+        //             document.getElementById('price').value = price 
+
+        //     const container = document.querySelector('#ul')
+        //     const productItems = document.createElement("li")
+        //     productItems.innerHTML = `          
+        //                     <li class="list-group-item">${name}</li>
+        //                     <li class="list-group-item">${description}</li>
+        //                     <li class="list-group-item">${brand}</li>
+        //                     <li class="list-group-item">${imgUrl}</li>
+        //                     <li class="list-group-item">${price}</li>
+        //                 `
+        //                 container.appendChild(productItems)
+
+
+        //             // const myObject = {
+        //             //     name: name,
+        //             //     description: description,
+        //             //     brand: brand,
+        //             //     imageUrl: imgUrl,
+        //             //     price: parseInt(price)    
+        //             // }
+        //             // console.log(myObject)
+        //     try {
+                
+        //         const response = await fetch((url), {
+        //         method: 'GET',
+        //         body: JSON.stringify(url)
+        //         })
+        //         if(response.ok){
+        //             alert('Your edit request was successful.')
+        //             window.location.assign('home.html')
+        //         } else {
+        //             alert('Something went wrong with your request')
+        //         }
+
+        //     } catch (err) {
+        //         console.log(err)
+        //     }
+        // }
+
+ 
 
     </script>
 
