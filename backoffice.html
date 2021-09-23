@@ -88,7 +88,7 @@
                     <input id="price" type="number" class="form-control" placeholder="Enter price">
                   </div>
                   <button id="submit" type="submit" class="btn btn-success" >Sumbit</button>
-                  <button id="delete" type="button" class="btn btn-danger" onclick="deleteData(idURL)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <button id="delete" type="button" class="btn btn-danger" onclick="deleteData(id)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                     <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                   </svg></button>
@@ -101,12 +101,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script>
 //        HERE WE ARE POSTING THE PRODUCT FROM THE BACK OFFICE
-            const idURL = new URLSearchParams(location.search).get("id")
+    const id = new URLSearchParams(location.search).get("id")
 
             
-            async function deleteData(_url) {
-            if (_url) {
-                let response = await fetch('https://striveschool-api.herokuapp.com/api/product/' + _url, {
+    async function deleteData(url) {
+            if (url) {
+                let response = await fetch('https://striveschool-api.herokuapp.com/api/product/' + url, {
                 method: 'DELETE',
                 headers: new Headers({
                     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzIzMTI0NjgsImV4cCI6MTYzMzUyMjA2OH0.MQK0IkMzaMTAcVrbR7hSi-OZAYCwk35tUrtFVQOG3jc",
@@ -114,14 +114,12 @@
                 })
                 })
             }
-
             setTimeout(() => window.location.assign("/"), 1000)
-            }
+    }
 
-            async function editData(_url, obj) {
-            if (_url) {
-                console.log('dsadsa')
-                let response = await fetch('https://striveschool-api.herokuapp.com/api/product/' + _url, {
+    async function editData(url, obj) {
+            if (url) {
+                let response = await fetch('https://striveschool-api.herokuapp.com/api/product/' + url, {
                 method: 'PUT',
                 body: JSON.stringify(obj),
                 headers: new Headers({
@@ -131,10 +129,10 @@
                 })
             }
 
-            }
+    }
 
-            function getData(_url) {
-            fetch("https://striveschool-api.herokuapp.com/api/product/" + _url, {
+    function getData(url) {
+            fetch("https://striveschool-api.herokuapp.com/api/product/" + url, {
                 headers: {
                 "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzIzMTI0NjgsImV4cCI6MTYzMzUyMjA2OH0.MQK0IkMzaMTAcVrbR7hSi-OZAYCwk35tUrtFVQOG3jc"
                 }
@@ -148,13 +146,13 @@
                 console.log(_id)
 
             })
-            }
+    }
 
 
 
 
 
-            async function sendData(obj) {
+    async function sendData(obj) {
             let response = await fetch('https://striveschool-api.herokuapp.com/api/product/', {
                 method: 'POST',
                 body: JSON.stringify(obj),
@@ -164,11 +162,12 @@
                 })
             })
 
-            }
+    }
 
 
-            function submitForm(_event,_url) {
-            _event.preventDefault()
+    function submitForm(event,url) {
+
+        event.preventDefault()
             let name = document.getElementById('name').value
             let description = document.getElementById('description').value
             let brand = document.getElementById('brand').value
@@ -184,34 +183,28 @@
                 brand: brand,
                 imageUrl: imgurl,
                 price: parseInt(price)
-
-
-
-
-
             }
 
-            if(_url){
+            if(url){
                 console.log('edit')
-            editData(_url, obj)
-
-            }else{
+                editData(url, obj)
+            }else {
             sendData(obj)}
 
 
             setTimeout(() => window.location.assign("/"), 1000)
                 }
 
-            const form = document.getElementsByTagName('form')[0]
-            const button1 = document.getElementById('submit')
-            const buttonDelete = document.getElementById('delete')
+            const form = document.getElementsByTagName('form')
+            const submitBtn = document.getElementById('submit')
+            const deleteBtn = document.getElementById('delete')
 
-            if (idURL) {
+            if (id) {
             
-        //onsubmit="submitForm(event, idURL)"
-            form.onsubmit = () => { submitForm(event, idURL) }
 
-            button1.classList.add('btn-success')
+            form.onsubmit = () => { submitForm(event, id) }
+
+            button1.classList.add('btn-warning')
             button1.innerText='Edit'
             
 
@@ -221,8 +214,8 @@
 
             } else {
             form.onsubmit = () => { submitForm(event) }
-            button1.classList.add('btn-primary')
-            buttonDelete.remove()
+            submitBtn.classList.add('btn-primary')
+            deleteBtn.remove()
             }
             
 

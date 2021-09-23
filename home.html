@@ -148,7 +148,7 @@
               <p class="card-text">Product info: ${product.description}</p>
               <p class="card-text">Price: €${product.price} </p>
               <button type="button" class="btn btn-warning" onclick="addToCart(event,'${product.imageUrl}', '${product.brand}' ,'${product.name}', '€${product.price}')">Buy</button>
-              <a  onclick="window.location.href='./backoffice.html?id=${product._id}" class="edit-product"> Edit Product</a>
+              <a  href="backoffice.html?id=${product._id}" class="edit-product"> Edit Product</a>
 
               
             </div>`
