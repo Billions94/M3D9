@@ -10,6 +10,7 @@
     <style>
         body {
           margin: 0;
+          padding: 0;
           color: black;
           /* background: rgb(2,0,36);
           background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%); */
@@ -79,9 +80,23 @@
           }
 
           .header-img{
-              height: 40vh;
+              height: 35vh;
               object-fit: cover;
               
+          }
+
+          /* #list-group {
+              width: 100%;
+              border-left: none;
+              border-right: none;
+          } */
+
+          h1 {
+              font-size: 28px;
+          }
+          #editbtn {
+              width: 30%;
+              border-radius: 20px;
           }
       </style>
 
@@ -100,7 +115,7 @@
                     <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="backoffice.html">Back Office</a>
+                    <a class="nav-link" href="#">Back Office</a>
                     </li>
                 </ul>
                 </div>
@@ -108,18 +123,23 @@
 
             <img src="./images/fashion.jpg" alt="" class="header-img img-fluid w-100">
 
-            
-            
-            <div class="container">
-                <h1 class="text-dark">Edit Product</h1>
-                <div  class="row justify-content-center">
-                    <div class="col-8">
-                        <ul id="ul" class="list-group list-group-flush">
 
-                        </ul>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <h4 class="mt-3 mb-2">Edit Product</h4>
+                        <div id="event-details">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <!-- GENERATED FROM JS -->
+                        </div>
+                        <button id="editbtn" type="button" class="btn btn-warning"onclick="edit()" >Edit</button>
                     </div>
                 </div>
             </div>
+            
+            
 
 
 
@@ -129,110 +149,58 @@
     <script>
 
 
-        const getProduct = (product) => {
 
-                const container = document.querySelector('.row')
-                const containerNode = document.createElement('div')
-                containerNode.className = 'col-3'
-                containerNode.innerHTML = `          
-                             <li class="list-group-item">${name}</li>
-                            <li class="list-group-item">${description}</li>
-                            <li class="list-group-item">${brand}</li>
-                            <li class="list-group-item">${imgUrl}</li>
-                            <li class="list-group-item">${price}</li>
-                        `
-
-                    container.appendChild(containerNode)
-        }
-
-        const fetchData = () => {
-            const productId = new URLSearchParams(location.search).get('productId')
-            const url = productId ? "https://striveschool-api.herokuapp.com/api/product/" + productId : "https://striveschool-api.herokuapp.com/api/product/"
-  
-            const {name, description, brand, imgUrl, price} = data
-            console.log(data)
-
-                    // document.getElementById('name').value = name
-                    // document.getElementById('description').value = description
-                    // document.getElementById('brand').value =  brand
-                    // document.getElementById('Img-Url').value = imgUrl
-                    // document.getElementById('price').value = price 
-
-
-                fetch((url), {
-                // method: 'GET',
-                // body: JSON.stringify(myObject), 
-                headers: {
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI"
-                }
-                })
-                .then(response => response.json())
-                .then(data => {
-
-                console.log(data)
-                data.forEach(product => {
-                
-                getProduct(product)
-                console.log(product)
-                
-                })
-
-            })
-
-            }
+    const url = "https://striveschool-api.herokuapp.com/api/product/"
+    const productId = new URLSearchParams(location.search).get('id')
+    console.log(productId)
         
-        window.onload = () => {
-            fetchData()
-        }
-        // window.onload = async (event) => {
+    window.onload = async () => {
+       
+        
+        try {
+            const response = await fetch(url + productId, {
+            headers: new Headers({ "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI",
+                "Content-Type": "application/json"
+            })
+            })
+            const productData = await response.json()
             
-
-        //     const {name, description, brand, imgUrl, price} = data
-        //     console.log(data)
-
-        //             document.getElementById('name').value = name
-        //             document.getElementById('description').value = description
-        //             document.getElementById('brand').value =  brand
-        //             document.getElementById('Img-Url').value = imgUrl
-        //             document.getElementById('price').value = price 
-
-        //     const container = document.querySelector('#ul')
-        //     const productItems = document.createElement("li")
-        //     productItems.innerHTML = `          
-        //                     <li class="list-group-item">${name}</li>
-        //                     <li class="list-group-item">${description}</li>
-        //                     <li class="list-group-item">${brand}</li>
-        //                     <li class="list-group-item">${imgUrl}</li>
-        //                     <li class="list-group-item">${price}</li>
-        //                 `
-        //                 container.appendChild(productItems)
-
-
-        //             // const myObject = {
-        //             //     name: name,
-        //             //     description: description,
-        //             //     brand: brand,
-        //             //     imageUrl: imgUrl,
-        //             //     price: parseInt(price)    
-        //             // }
-        //             // console.log(myObject)
-        //     try {
                 
-        //         const response = await fetch((url), {
-        //         method: 'GET',
-        //         body: JSON.stringify(url)
-        //         })
-        //         if(response.ok){
-        //             alert('Your edit request was successful.')
-        //             window.location.assign('home.html')
-        //         } else {
-        //             alert('Something went wrong with your request')
-        //         }
+                const container = document.querySelector('#event-details')
+                
+                const {_id, name, description, price, createdAt, updatedAt} = productData
+                console.log(productData)
 
-        //     } catch (err) {
-        //         console.log(err)
-        //     }
-        // }
+                container.innerHTML = ''
+                container.innerHTML = ` <ul id="ul" class="list-group list-group-flush">         
+                    <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT ID</strong>: ${_id}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT NAME</strong>: ${name}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT DESCRIPTION</strong>: ${description}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT PRICE</strong>: €${price}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>CREATED AT</strong>: ${createdAt}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>UPDATED AT</strong>: ${updatedAt}</li>
+                    </ul>
+                    `
+                    container.appendChild(containerNode)    
+                    
+            
+                
+            } catch (err) {
+                console.log(err)
+            }
+
+           
+
+
+    }
+
+ 
+
+    const edit = () => {
+        window.location.assign("backoffice.html?id=" + productId)
+    }
+        
+
 
  
 

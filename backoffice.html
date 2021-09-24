@@ -61,12 +61,13 @@
       </nav>
 
     <h1 class="text-center"> <img src="./images/backoffice.png" style="width:30px" alt=""> Back Office</h1>
+    <h5 class="subtitle text-center"></h5>
     
 
 
  
         <div id="form-container" class="row justify-content-center mb-3">
-            <form id="form" >
+            <form id="form" onsubmit="handleSubmit(event)">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input id="name" type="text" class="form-control" placeholder="Enter product name">
@@ -87,12 +88,10 @@
                     <label for="price">Price</label>
                     <input id="price" type="number" class="form-control" placeholder="Enter price">
                   </div>
-                  <button id="submit" type="submit" class="btn btn-success" >Sumbit</button>
-                  <button id="delete" type="button" class="btn btn-danger" onclick="deleteData(id)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
-                  </svg></button>
-                 
+                  <button id="submit" type="submit" class="btn btn-success"></button>
+                  <div class="form-group">
+                  </div>
+                  <button id="delete" type="button" class="btn btn-danger" onclick="deleteProduct(event)">Delete</button>
             </form>
         </div>
 
@@ -100,123 +99,342 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script>
-//        HERE WE ARE POSTING THE PRODUCT FROM THE BACK OFFICE
-    const id = new URLSearchParams(location.search).get("id")
 
-            
-    async function deleteData(url) {
-            if (url) {
-                let response = await fetch('https://striveschool-api.herokuapp.com/api/product/' + url, {
-                method: 'DELETE',
-                headers: new Headers({
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzIzMTI0NjgsImV4cCI6MTYzMzUyMjA2OH0.MQK0IkMzaMTAcVrbR7hSi-OZAYCwk35tUrtFVQOG3jc",
-                    'Content-Type': 'application/json'
-                })
-                })
-            }
-            setTimeout(() => window.location.assign("/"), 1000)
-    }
 
-    async function editData(url, obj) {
-            if (url) {
-                let response = await fetch('https://striveschool-api.herokuapp.com/api/product/' + url, {
-                method: 'PUT',
-                body: JSON.stringify(obj),
-                headers: new Headers({
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzIzMTI0NjgsImV4cCI6MTYzMzUyMjA2OH0.MQK0IkMzaMTAcVrbR7hSi-OZAYCwk35tUrtFVQOG3jc",
-                    'Content-Type': 'application/json'
-                })
-                })
-            }
+        
+        
+        
+        
+        const productId = new URLSearchParams(location.search).get("id")
+        const endpoint = productId ? "https://striveschool-api.herokuapp.com/api/product/" + productId : "https://striveschool-api.herokuapp.com/api/product/"
+        
+        window.addEventListener("DOMContentLoaded", async () => {
 
-    }
+            console.log("RESOURCE ID: ", productId)
 
-    function getData(url) {
-            fetch("https://striveschool-api.herokuapp.com/api/product/" + url, {
+            const submitBtn = document.querySelector("#submit")
+
+            if (productId) {
+                // WE ARE IN THE EDIT PAGE
+                const response = await fetch(endpoint, {      
                 headers: {
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzIzMTI0NjgsImV4cCI6MTYzMzUyMjA2OH0.MQK0IkMzaMTAcVrbR7hSi-OZAYCwk35tUrtFVQOG3jc"
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI"
                 }
-            }).then(response => { return response.json() }).then((data) => {
-
-                const { _id } = data
-                let name = document.getElementById('name').value = _id
-
-
-
-                console.log(_id)
-
-            })
-    }
-
-
-
-
-
-    async function sendData(obj) {
-            let response = await fetch('https://striveschool-api.herokuapp.com/api/product/', {
-                method: 'POST',
-                body: JSON.stringify(obj),
-                headers: new Headers({
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMWM5NDRiYjUzZDAwMTViMTllY2MiLCJpYXQiOjE2MzIzMTI0NjgsImV4cCI6MTYzMzUyMjA2OH0.MQK0IkMzaMTAcVrbR7hSi-OZAYCwk35tUrtFVQOG3jc",
-                'Content-Type': 'application/json'
                 })
-            })
+                console.log(response) // FETCHING SINGLE RESOURCE WITH EVENT ID
+                const productData = await response.json()
+                console.log(productData)
 
-    }
+                const { name, description, price, imageUrl, brand} = productData // DESTRUCTURING THE RESPONSE OBJECT PROPERTIES
 
+                //PREFILLING THE FORM INPUTS
+                        document.getElementById('name').value = name
+                        document.getElementById('description').value = description
+                        document.getElementById('brand').value = brand
+                        document.getElementById('Img-Url').value = imageUrl
+                        document.getElementById('price').value  = price
 
-    function submitForm(event,url) {
+                // DOM MANIPULATION
+                document.querySelector(".subtitle").innerText = " — Edit Event"
 
-        event.preventDefault()
-            let name = document.getElementById('name').value
-            let description = document.getElementById('description').value
-            let brand = document.getElementById('brand').value
-            let imgurl = document.getElementById('imgurl').value
-            let price = document.getElementById('price').value
+                submitBtn.classList.add("btn-warning")
+                submitBtn.innerText = "Edit Product"
 
-
-
-            let obj = {
-
-                name: name,
-                description: description,
-                brand: brand,
-                imageUrl: imgurl,
-                price: parseInt(price)
-            }
-
-            if(url){
-                console.log('edit')
-                editData(url, obj)
-            }else {
-            sendData(obj)}
-
-
-            setTimeout(() => window.location.assign("/"), 1000)
-                }
-
-            const form = document.getElementsByTagName('form')
-            const submitBtn = document.getElementById('submit')
-            const deleteBtn = document.getElementById('delete')
-
-            if (id) {
-            
-
-            form.onsubmit = () => { submitForm(event, id) }
-
-            button1.classList.add('btn-warning')
-            button1.innerText='Edit'
-            
-
-
-
-
+                // MAKE DELETE BUTTON VISIBLE
+                document.querySelector("#delete").classList.remove("d-none")
 
             } else {
-            form.onsubmit = () => { submitForm(event) }
-            submitBtn.classList.add('btn-primary')
-            deleteBtn.remove()
+                // WE ARE IN THE CREATE NEW EVENT PAGE
+                submitBtn.classList.add("btn-primary")
+                submitBtn.innerText = "Add product"
+                submitBtn.querySelector(".subtitle").innerText = " — Create an Event"
+
+                console.log("WE NEED TO POST!")
             }
+
+
+        })
+
+        const validate = (event) => {
+            event.target.form.classList.add("validated")
+        }
+
+        const method = productId ? "PUT" : "POST"
+
+        const handleSubmit = async (event) => {
+
+            event.preventDefault()
+            // this is stopping the default behavior from the browser
+            // about this specific event, which would instead refresh the page and insert some
+            // querystrings into the address bar
+
+            isLoading(true);
+
+
+            const myObject = {
+                        name: document.getElementById('name').value, 
+                 description: document.getElementById('description').value ,
+                       brand: document.getElementById('brand').value,  
+                    imageUrl: document.getElementById('Img-Url').value, 
+                       price: document.getElementById('price').value  
+            }
+
+            try {
+
+                const response = await fetch(endpoint, {
+                    // method, // { method: "PUT"} DESTRUCTURING
+                    method: productId ? "PUT" : "POST",
+                    body: JSON.stringify(myObject),
+                    // the body property is the payload of our call,
+                    // so the content we want to carry!
+                    // it must be a STRING
+                    // so our myEvent object needs to be stringified
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                    // the headers in an HTTP call are all about meta-information
+                    // we need to pass the "Content-Type" to make our APIs aware
+                    // that our payload is not any string, but it's an object stringified
+                })
+
+                if (response.ok) {
+                    // everything went well
+                    const respEvent = await response.json()
+                    if (productId) {
+                        // Edit alert
+                        showAlert("success", "Appointment with an id of " + respEvent._id + " was EDITED successfully")
+                    } else {
+                        // Creation alert
+                        showAlert("info", "Appointment created successfully with an id of " + respEvent._id)
+                    }
+                }
+            } catch (err) {
+                // Error alert
+                showAlert("danger", err.message)
+            }
+            finally {
+                // switching off the loader in any case at this point
+                isLoading(false);
+            }
+        }
+
+        const deleteProduct = async () => {
+            const accepted = confirm("do you want to delete?")
+
+            console.log("Confirmed? ", accepted)
+
+            if (accepted) {
+                try {
+                    let response = await fetch(endpoint, { method: "DELETE" })
+
+                    if (response.ok) {
+                        let deletedObj = await response.json()
+                        showAlert("danger", "Event: " + deletedObj.name + " deleted successfully")
+                        setTimeout(() => window.location.assign("/"), 3000)
+                    }
+                }
+                catch (err) {
+                    console.log(err)
+                }
+            }
+        }
+
+        // Custom alert to avoid using alert() that freezes the execution of the code
+        const showAlert = (type, msg) => {
+            const alertContainer = document.getElementById("alert-box")
+
+            alertContainer.innerHTML = `
+            <div class="alert alert-${type}" role="alert">
+            ${msg}
+            </div>
+            `
+
+            setTimeout(() => {
+                alertContainer.innerHTML = ""
+            }, 3000)
+        }
+
+        // Function to display the loader
+        const isLoading = (loading) => {
+            const submitBtn = document.querySelector("#submitBtn")
+
+            const spinner = `<span id="spinner" class="spinner-border spinner-border-sm ml-2" role="status"
+                aria-hidden="true"></span>`
+
+            if (loading) {
+                // appending new html string
+                submitBtn.innerHTML += spinner;
+            } else {
+                // removing the #spinner node
+                submitBtn.querySelector("#spinner").remove()
+            }
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//         //        HERE WE ARE POSTING THE PRODUCT FROM THE BACK OFFICE
+//         const handleSubmit = async (event) => {
+//             const productId = new URLSearchParams(location.search).get('id')
+//             console.log(productId)
+//             const url = "https://striveschool-api.herokuapp.com/api/product/"
+            
+//             const endpoint = productId ? url + productId : url
+//             const method = productId ? "PUT" : "POST" 
+
+//             event.preventDefault()
+
+//             let name = document.getElementById('name').value
+//             let description = document.getElementById('description').value
+//             let brand = document.getElementById('brand').value
+//             let imgUrl = document.getElementById('Img-Url').value
+//             let price = document.getElementById('price').value  
+
+//             const myObject = {
+//                 name: name,
+//                 description: description,
+//                 brand: brand,
+//                 imageUrl: imgUrl,
+//                 price: parseInt(price)    
+//             }
+//             console.log(myObject)
+
+//             try {
+
+//             const response = await fetch(url, {
+//                 method,
+//                 body: JSON.stringify(myObject),
+//                 headers: new Headers({ "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI",
+//                     "Content-Type": "application/json"
+//                 })
+//             })
+//             if(response.ok){
+//                 alert('Your product was successfully added.')
+//                     window.location.assign('home.html')
+//                     if(productId){
+//                         const edit = document.querySelector('#submit')
+//                         edit.innerText = Edit
+//                         alert('Product was successfully edited')
+//                         window.location.assign('home.html')
+//                     }             
+//                 } else {
+//                     alert('Something went wrong with your request')
+//                 }
+//             } catch (err) {
+//                 console.log(err)
+//             }
+//         }
+//         handleSubmit()
+
+       
+
+// //            HERE WE ARE DELETING THE PRODUCT FROM THE BACK OFFICE WITH THEIR ID        
+//     const deleteProduct = async (event) => {
+            
+//             const productId = new URLSearchParams(location.search).get('id')
+//             console.log(productId)
+//             const url = 'https://striveschool-api.herokuapp.com/api/product/'
+//             const endpoint = productId ? url + productId : url
+//             const method = productId ? "DELETE" : "PUT" 
+
+//             console.log('error')
+           
+//             // handleSubmit(productId)
+
+//             try {
+
+//             const response = await fetch(endpoint, {
+               
+//                 headers: new Headers({ "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI",
+//                     "Content-Type": "application/json"
+//                 })
+//             })
+
+//                 if(response.ok){
+//                     const data = await response.json()
+//                     console.log(data)
+//                         document.getElementById('name').value = data.name
+//                         document.getElementById('description').value = data.description
+//                         document.getElementById('brand').value = data.brand
+//                         document.getElementById('Img-Url').value = data.imageUrl
+//                         document.getElementById('price').value  = data.price
+//                     // alert('Your product was successfully updated')
+//                     // window.location.assign('home.html')
+//                 } else {
+//                     alert('Something went wrong with your request')
+//                 }
+//             } catch (err) {
+//                 console.log(err)
+//             }
+//         }
+
+// //            HERE WE ARE EDITING THE PRODUCT FROM THE BACK OFFICE
+
+//     const editProduct = async (event) => {
+            
+//             const productId = new URLSearchParams(location.search).get('id')
+//             console.log(productId)
+//             const url = 'https://striveschool-api.herokuapp.com/api/product/'
+//             const endpoint = productId ? url + productId : url
+
+//             console.log('error')
+           
+//             // handleSubmit(productId)
+
+//             try {
+
+//             const response = await fetch(endpoint, {
+               
+//                 headers: new Headers({ "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjJhYTRiYjUzZDAwMTViMTllZGUiLCJpYXQiOjE2MzIzMTQwMjcsImV4cCI6MTYzMzUyMzYyN30.77Yuy9DLj_tVyAeila_3MBsQRZdNMxEbAkVipEDT8CI",
+//                     "Content-Type": "application/json"
+//                 })
+//             })
+
+//                 if(response.ok){
+//                     const data = await response.json()
+//                     console.log(data)
+//                         document.getElementById('name').value = data.name
+//                         document.getElementById('description').value = data.description
+//                         document.getElementById('brand').value = data.brand
+//                         document.getElementById('Img-Url').value = data.imageUrl
+//                         document.getElementById('price').value  = data.price
+//                     // alert('Your product was successfully updated')
+//                     // window.location.assign('home.html')
+//                 } else {
+//                     alert('Something went wrong with your request')
+//                 }
+//             } catch (err) {
+//                 console.log(err)
+//             }
+//         }
+
+//         window.onload = () => {
+//             const productId = new URLSearchParams(location.search).get('id')
+//             if(productId){
+//                 editProduct()
+//             }
+//         }
+        
+       
+
+
+   
+
             
 
         
