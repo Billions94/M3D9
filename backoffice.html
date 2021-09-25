@@ -8,24 +8,35 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <style>
-        body {
-            color: white;
-            background: rgb(2,0,36);
-            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%);
+    body {
+        margin: 0;
+        color: white;
+        background-image: url('https://storage.googleapis.com/kaggle-datasets-images/1012945/1708605/08ea077a0a4a9f009075ac24d6ac524b/data-original.jpg?t=2020-12-03-08-19-36');
+        object-fit: cover
+        /* background: rgb(2,0,36);
+        background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%); */        
+      }
+    .cool {
+            /* background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%); */
+            background-color: transparent;
         }
 
-        .cool {
-            background: rgb(2,0,36);
-            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(177,18,129,1) 100%, rgba(0,212,255,1) 100%);
-        }
-
-        #form {
+    #form {
             width: 35%;
         }
 
-        #form-container {
+    #form-container {
             /* height: 730px; */
         }
+    .aquabtn {
+            background-color: rgb(20, 39, 53);
+            color: white;
+        }
+    .aquabtn:hover {
+        color: white;
+        background-color: rgb(27, 64, 92);
+    }
     </style>
 
     <title>Back Office</title>
@@ -33,7 +44,7 @@
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark cool sticky-top">
-        <a class="navbar-brand" href="#">Strivazon <img src="./images/navicon.png" style="width:15px" alt=""> </a>
+        <a class="navbar-brand" href="home.html">Strivazon <img src="./images/navicon.png" style="width:25px" alt=""> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -92,7 +103,7 @@
                             placeholder="Enter product brand" required>
                     </div>
                     <div class="form-group">
-                        <label for="Img-Url">Img Url</label>
+                        <label for="Img-Url">Image Url</label>
                         <input id="Img-Url" type="text" class="form-control" placeholder="Enter image url">
                       </div>
                     <div class="form-group">
@@ -101,17 +112,11 @@
                     </div><span id="spinner" class="spinner-border spinner-border-sm ml-2 d-none" role="status"
                         aria-hidden="true"></span>
                     <div class="d-flex justify-content-between">
-                        <button type="submit" class="btn" onclick="validate(event)">
+                        <button id="submit-btn" type="submit" class="btn" onclick="validate(event)" style="width:100px; border-radius:20px">
                         </button>
 
-                        <button id="delete-btn" type="button" class="btn btn-danger d-none" onclick="handleDelete()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                class="bi bi-trash" viewBox="0 0 16 16">
-                                <path
-                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                <path fill-rule="evenodd"
-                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                            </svg>
+                        <button id="delete-btn" type="button" class="btn btn-danger d-none" onclick="handleDelete()" style="width:60px;border-radius:60px">
+                            <img src="./images/trash.png" width="20px">
                         </button>
                     </div>
                 </form>
@@ -162,7 +167,7 @@
                 // DOM MANIPULATION
                 document.querySelector(".subtitle").innerText = "Update a product"
 
-                submitBtn.classList.add("btn-warning")
+                submitBtn.classList.add("aquabtn")
                 submitBtn.innerText = "Edit"
 
                 // MAKE DELETE BUTTON VISIBLE
