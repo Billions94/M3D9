@@ -168,7 +168,7 @@
                 
                 const container = document.querySelector('#event-details')
                 
-                const {_id, name, description, price, createdAt, updatedAt} = productData
+                const {_id, name, description, brand, imageUrl,price, createdAt, updatedAt} = productData
                 console.log(productData)
 
                 container.innerHTML = ''
@@ -176,6 +176,8 @@
                     <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT ID</strong>: ${_id}</li>
                     <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT NAME</strong>: ${name}</li>
                     <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT DESCRIPTION</strong>: ${description}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT DESCRIPTION</strong>: ${brand}</li>
+                    <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT DESCRIPTION</strong>: ${imageUrl}</li>
                     <li id='list-group' class="list-group-item pl-2"><strong>PRODUCT PRICE</strong>: €${price}</li>
                     <li id='list-group' class="list-group-item pl-2"><strong>CREATED AT</strong>: ${createdAt}</li>
                     <li id='list-group' class="list-group-item pl-2"><strong>UPDATED AT</strong>: ${updatedAt}</li>
